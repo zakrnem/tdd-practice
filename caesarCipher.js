@@ -1,4 +1,10 @@
 export function caesarCipher(offset, string) {
+  if (offset > 25 || offset < 0) {
+    throw new Error('Enter a offset value between 1 and 25')
+  }
+  if (typeof offset !== 'number' || typeof string !== 'string') {
+    throw new TypeError()
+  }
   const stringArray = Array.from(string)
   stringArray.forEach((character, index, array) => {
     array[index] = offsetChar(character, offset)
@@ -7,20 +13,24 @@ export function caesarCipher(offset, string) {
 }
 
 function offsetChar(character, offset) {
-  if (offset > 25) {
-    throw new Error()
-  }
   if (character === ' ') return character
   else {
-    character = character.toLowerCase()
     let charPosition = character.charCodeAt()
-    if (charPosition >= 97 && charPosition <= 122) {//Lowercase
+    if (charPosition >= 65 && charPosition <= 90) {
+      //Uppercase
       charPosition += offset
-      charPosition = (charPosition > 122) ? charPosition-26 : charPosition
-      charPosition = (charPosition < 97) ? charPosition+26 : charPosition
+      charPosition = charPosition > 90 ? charPosition - 26 : charPosition
+      charPosition = charPosition < 65 ? charPosition + 26 : charPosition
       character = String.fromCharCode(charPosition)
       return character
     }
-    
+    if (charPosition >= 97 && charPosition <= 122) {
+      //Lowercase
+      charPosition += offset
+      charPosition = charPosition > 122 ? charPosition - 26 : charPosition
+      charPosition = charPosition < 97 ? charPosition + 26 : charPosition
+      character = String.fromCharCode(charPosition)
+      return character
+    }
   }
 }
